@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Portfolio</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #333;
+            --secondary-color: #888;
+            --light-color: #f9f9f9;
+            --dark-color: #222;
+            --accent-color: #6b6b6b;
+            --transition: all 0.3s ease;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+        }
+        
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        }
+        
+        h3 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+        
+        /* Layout */
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        /* Header and Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1500/1000') no-repeat center center;
+            background-size: cover;
+            color: white;
+            position: relative;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero p {
+            margin-bottom: 30px;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 30px);
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            text-decoration: none;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-dark {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .btn-dark:hover {
+            background: transparent;
+            color: var(--primary-color);
+        }
+        
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        .scroll-down svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        
+        /* Portfolio Grid */
+        .portfolio-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .portfolio-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            padding: 8px 20px;
+            background: var(--light-color);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+        }
+        
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-overlay h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-overlay p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            display: block;
+            border-radius: 5px;
+        }
+        
+        .lightbox-caption {
+            color: white;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        /* About Section */
+        .about {
+            background-color: var(--light-color);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.03);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+        
+        /* Services Section */
+        .services-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-item {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .service-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--light-color);
+            text-align: center;
+        }
+        
+        .testimonials-heading {
+            margin-bottom: 50px;
+        }
+        
+        .testimonials-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial {
+            padding: 30px;
+            margin: 20px 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        
+        .testimonial.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .testimonial-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+        }
+        
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .testimonial-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            margin: 0 15px;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .testimonial-btn:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Contact Section */
+        .contact-heading {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .contact-content {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-item {
+            margin-bottom: 30px;
+        }
+        
+        .contact-item h3 {
+            margin-bottom: 10px;
+        }
+        
+        .contact-form {
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        /* Instagram Feed Section */
+        .instagram {
+            text-align: center;
+        }
+        
+        .instagram-heading {
+            margin-bottom: 50px;
+        }
+        
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+        
+        .instagram-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+        }
+        
+        .instagram-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .instagram-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .instagram-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .instagram-item:hover .instagram-overlay {
+            opacity: 1;
+        }
+        
+        .instagram-icon {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-about p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background: white;
+            color: var(--dark-color);
+        }
+        
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .instagram-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-content {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                margin-bottom: 30px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 40px 0;
+            }
+            
+            .header-container {
+                padding: 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: white;
+                z-index: 1000;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 80px 30px 30px;
+            }
+            
+            nav ul li {
+                margin: 15px 0;
+            }
+            
+            .instagram-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                width: 95%;
+            }
+            
+            .instagram-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .portfolio-categories {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 80%;
+                margin-bottom: 10px;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="header-container">
+                <a href="#home" class="logo">PhotoArt</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Capturing Life's Beautiful Moments</h1>
+            <p>Professional photography services for weddings, portraits, events, and more</p>
+            <a href="#portfolio" class="btn">View My Work</a>
+        </div>
+        <a href="#portfolio" class="scroll-down">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="8 12 12 16 16 12"></polyline>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+            </svg>
+        </a>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="portfolio-heading">
+                <h2>My Portfolio</h2>
+                <p>Browse through my latest work and creative projects</p>
+            </div>
+            
+            <div class="portfolio-categories">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="wedding">Weddings</button>
+                <button class="category-btn" data-category="portrait">Portraits</button>
+                <button class="category-btn" data-category="nature">Nature</button>
+                <button class="category-btn" data-category="event">Events</button>
+            </div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="wedding">
+                    <img src="/api/placeholder/600/600" alt="Wedding Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Beach Wedding</h3>
+                        <p>A beautiful sunset ceremony in Malibu</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="portrait">
+                    <img src="/api/placeholder/600/600" alt="Portrait Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Urban Portrait</h3>
+                        <p>Fashion shoot in the city</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="nature">
+                    <img src="/api/placeholder/600/600" alt="Nature Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Mountain Sunrise</h3>
+                        <p>Breathtaking landscape from Mt. Whitney</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="event">
+                    <img src="/api/placeholder/600/600" alt="Event Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Corporate Gala</h3>
+                        <p>Annual charity fundraiser</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="wedding">
+                    <img src="/api/placeholder/600/600" alt="Wedding Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Garden Ceremony</h3>
+                        <p>Spring wedding in botanical gardens</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="portrait">
+                    <img src="/api/placeholder/600/600" alt="Portrait Photography">
+                    <div class="portfolio-overlay">
+                        <h3>Studio Session</h3>
+                        <p>Professional headshots for executives</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">×</button>
+            <img src="" alt="" class="lightbox-img" id="lightboxImg">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="/api/placeholder/600/800" alt="Photographer">
+                </div>
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p>Hello! I'm a passionate photographer based in [Your City]. With over [X] years of experience capturing life's precious moments, I've developed a unique style that combines artistic vision with technical expertise.</p>
+                    <p>My approach to photography is centered around storytelling. I believe every photo should evoke emotion and preserve memories that will last a lifetime. Whether I'm shooting a wedding, portrait session, or landscape, I strive to create images that are both beautiful and meaningful.</p>
+                    <p>When I'm not behind the camera, you can find me exploring new locations, experimenting with different techniques, and constantly refining my craft. I would be honored to help you capture your special moments.</p>
+                    <div class="signature">John Doe</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-heading">
+                <h2>My Services</h2>
+                <p>Professional photography services tailored to your needs</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-item">
+                    <div class="service-icon">📷</div>
+                    <h3>Wedding Photography</h3>
+                    <p>Capture every beautiful moment of your special day with our comprehensive wedding photography packages.</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">👪</div>
+                    <h3>Portrait Photography</h3>
+                    <p>Individual, family, and group portraits that showcase personality and create lasting memories.</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🎭</div>
+                    <h3>Event Photography</h3>
+                    <p>From corporate gatherings to birthday celebrations, we'll document your event with style.</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏞️</div>
+                    <h3>Landscape Photography</h3>
+                    <p>Stunning landscape prints that bring the beauty of nature into your home or office.</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏢</div>
+                    <h3>Commercial Photography</h3>
+                    <p>Professional product and business photography to enhance your brand and marketing materials.</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🎓</div>
+                    <h3>Photography Workshops</h3>
+                    <p>Learn photography techniques and skills with our personalized workshops for all skill
